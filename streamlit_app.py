@@ -1,3 +1,4 @@
+
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -24,7 +25,7 @@ st.title("Explorador de operación")
 st.caption("Aplicación inicial para explorar resultados por área y región.")
 
 # TODO OBLIGATORIO: escribe tu nombre completo.
-st.write("**Desarrollado por:** Escribe aquí tu nombre")
+st.write("**Desarrollado por:** Itzel Mejia")
 
 st.sidebar.header("Filtros")
 
@@ -87,3 +88,31 @@ st.info(
 # - Organiza resultados y metodología en pestañas o en la barra lateral.
 # - Incluye una conclusión o recomendación basada en los datos visibles.
 
+
+st.subheader("Simulador de casos")
+
+st.write("Calcula los casos estimados después de aplicar una reducción y compara el resultado con una meta.")
+
+total_casos = int(df_filtrado["Casos"].sum())
+
+porcentaje_reduccion = st.number_input(
+    "Porcentaje de reducción (%)",
+    min_value=0,
+    max_value=100,
+    value=10
+)
+
+meta_casos = st.number_input(
+    "Meta máxima de casos",
+    min_value=0,
+    value=total_casos
+)
+
+casos_estimados = round(total_casos * (1 - porcentaje_reduccion / 100))
+
+st.metric("Casos estimados", casos_estimados)
+
+if casos_estimados <= meta_casos:
+    st.success("Los casos estimados cumplen con la meta establecida.")
+else:
+    st.warning("Los casos estimados superan la meta establecida.")
